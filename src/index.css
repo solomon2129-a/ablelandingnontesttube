@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global font family overrides */
+@layer base {
+  body {
+    @apply font-sans text-neutral-text-secondary;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+:root {
+  --cream: #F6F1E8;
+  --gold: #E8D8B8;
+  --warm-taupe: #8B7B6B;
+  --warm-gray: #9B8B7B;
+  --cyan: #00D4FF;
+  --magenta: #FF00CC;
+  --orange: #FF8C00;
+}
+
+/* Vibrant cream background with subtle texture */
+body {
+  background-color: #F6F1E8;
+  background-image: 
+    radial-gradient(800px 600px at 8% 12%, rgba(0, 212, 255, 0.04), transparent),
+    radial-gradient(700px 600px at 88% 85%, rgba(255, 0, 204, 0.03), transparent),
+    radial-gradient(600px 500px at 50% 50%, rgba(255, 140, 0, 0.02), transparent);
+  background-attachment: fixed;
+}
+
+/* Glass effect with vibrant accents */
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 251, 246, 0.8),
+    rgba(255, 255, 255, 0.6)
+  );
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Vibrant glowing effects for interactive elements */
+.glow-cyan {
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), inset 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+.glow-magenta {
+  box-shadow: 0 0 30px rgba(255, 0, 204, 0.4), inset 0 0 20px rgba(255, 0, 204, 0.1);
+}
+
+.glow-orange {
+  box-shadow: 0 0 30px rgba(255, 140, 0, 0.4), inset 0 0 20px rgba(255, 140, 0, 0.1);
+}
+
+.bloom-glow {
+  box-shadow: 0 0 60px rgba(0, 212, 255, 0.2);
+}
+
+.bloom-subtle {
+  box-shadow: 0 0 40px rgba(255, 0, 204, 0.15);
+}
+
+/* Organic shapes */
+.organic-rounded {
+  border-radius: 2.5rem;
+}
+
+/* Smooth transitions */
+* {
+  transition-duration: 300ms;
+}
+
+/* Typography refinement */
+h1 {
+  letter-spacing: -0.02em;
+}
+
+h2, h3 {
+  letter-spacing: -0.01em;
+}
+
+p, a, li {
+  letter-spacing: 0;
+}
+
+/* Link styling */
+a {
+  @apply transition-colors;
+}
+
+/* Remove default focus outline and add custom */
+button:focus,
+a:focus {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #00D4FF;
+  outline-offset: 2px;
+}
+
+/* Vibrant button styles */
+.btn-vibrant-cyan {
+  @apply relative overflow-hidden bg-gradient-to-br from-vibrant-cyan to-vibrant-cyan-dark text-white font-semibold rounded-full px-6 py-3 shadow-lg transition-all duration-300;
+}
+
+.btn-vibrant-cyan:hover {
+  @apply shadow-xl shadow-vibrant-cyan/50 scale-105;
+}
+
+.btn-vibrant-magenta {
+  @apply relative overflow-hidden bg-gradient-to-br from-vibrant-magenta to-vibrant-magenta-dark text-white font-semibold rounded-full px-6 py-3 shadow-lg transition-all duration-300;
+}
+
+.btn-vibrant-magenta:hover {
+  @apply shadow-xl shadow-vibrant-magenta/50 scale-105;
+}
+
+.btn-vibrant-orange {
+  @apply relative overflow-hidden bg-gradient-to-br from-vibrant-orange to-vibrant-orange-dark text-white font-semibold rounded-full px-6 py-3 shadow-lg transition-all duration-300;
+}
+
+.btn-vibrant-orange:hover {
+  @apply shadow-xl shadow-vibrant-orange/50 scale-105;
+}
+
+/* Interactive card styles */
+.card-vibrant {
+  @apply relative bg-white/70 backdrop-blur-md border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:border-vibrant-cyan/30 hover:shadow-lg hover:shadow-vibrant-cyan/20;
+}
+
+/* Gradient text for headings */
+.text-gradient-vibrant {
+  @apply bg-gradient-to-r from-vibrant-cyan via-vibrant-magenta to-vibrant-orange bg-clip-text text-transparent;
+}
+
+/* Accessibility - high contrast mode support */
+@media (prefers-contrast: more) {
+  body {
+    background-image: none;
+    @apply bg-neutral-bg;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* smooth site-wide scrolling */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
