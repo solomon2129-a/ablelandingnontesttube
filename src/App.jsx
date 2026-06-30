@@ -11,20 +11,20 @@ import Contact from './pages/Contact'
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 
-export default function App(){
+export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-neutral-bg text-neutral-text font-sans">
+      <div className="min-h-screen bg-light text-forest font-sans">
         <NavBarNew />
         <FloatingActionMenu />
         <Routes>
-          <Route path="/" element={<ErrorBoundary><HomeNew /></ErrorBoundary>} />
-          <Route path="/about" element={<ErrorBoundary><About /></ErrorBoundary>} />
+          <Route path="/"          element={<ErrorBoundary><HomeNew /></ErrorBoundary>} />
+          <Route path="/about"     element={<ErrorBoundary><About /></ErrorBoundary>} />
           <Route path="/ablehires" element={<ErrorBoundary><AbleHires /></ErrorBoundary>} />
-          <Route path="/partner" element={<ErrorBoundary><Partner /></ErrorBoundary>} />
-          <Route path="/contact" element={<ErrorBoundary><Contact /></ErrorBoundary>} />
-          <Route path="/terms" element={<ErrorBoundary><Terms /></ErrorBoundary>} />
-          <Route path="/privacy" element={<ErrorBoundary><Privacy /></ErrorBoundary>} />
+          <Route path="/partner"   element={<ErrorBoundary><Partner /></ErrorBoundary>} />
+          <Route path="/contact"   element={<ErrorBoundary><Contact /></ErrorBoundary>} />
+          <Route path="/terms"     element={<ErrorBoundary><Terms /></ErrorBoundary>} />
+          <Route path="/privacy"   element={<ErrorBoundary><Privacy /></ErrorBoundary>} />
         </Routes>
       </div>
     </BrowserRouter>

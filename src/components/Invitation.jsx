@@ -209,10 +209,10 @@ export default function Invitation(){
               <motion.a
                 whileHover={reduce ? {} : { y: -2, scale: 1.02 }}
                 whileTap={reduce ? {} : { scale: 0.98 }}
-                href="mailto:antomichae03@gmail.com"
+                href="mailto:abledots.official@gmail.com"
                 className="inline-block px-6 py-3 rounded-full text-warm-taupe border border-warm-taupe/20 hover:border-warm-taupe/50 hover:bg-warm-taupe/5 transition-all font-light"
               >
-                antomichae03@gmail.com
+                abledots.official@gmail.com
               </motion.a>
               <motion.a
                 whileHover={reduce ? {} : { y: -2, scale: 1.02 }}

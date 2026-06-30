@@ -1,134 +1,171 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { Link, useLocation } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 
-export default function NavBarNew(){
-  const [compact, setCompact] = useState(false)
-  const [hoveredLink, setHoveredLink] = useState(null)
+export default function NavBarNew() {
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
-    let last = window.pageYOffset
-    const onScroll = () => {
-      const cur = window.pageYOffset
-      if (cur > last && cur > 40) setCompact(true)
-      else setCompact(false)
-      last = Math.max(0, cur)
-    }
+    const onScroll = () => setScrolled(window.pageYOffset > 32)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => { setMenuOpen(false) }, [location.pathname])
+
   const navItems = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'AbleHires', href: '/ablehires' },
-    { label: 'Partner', href: '/partner' },
-    { label: 'Contact', href: '/contact' }
+    { label: 'About',          href: '/about' },
+    { label: 'AbleHires',      href: '/ablehires' },
+    { label: 'Partner With Us', href: '/partner' },
   ]
 
   return (
-    <motion.header
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="fixed inset-x-0 top-0 z-40 backdrop-blur-md"
-    >
-      <motion.nav
-        className="mx-auto max-w-7xl flex items-center justify-between py-4 md:py-6 px-6 md:px-8 lg:px-12"
-        animate={compact ? { scale: 0.97, y: -8 } : { scale: 1, y: 0 }}
-        transition={{ type: 'spring', stiffness: 140, damping: 18 }}
+    <>
+      <motion.header
+        initial={{ opacity: 0, y: -16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className={`fixed inset-x-0 top-0 z-40 bg-forest transition-all duration-300 ${
+          scrolled ? 'border-b border-mist/20' : ''
+        }`}
       >
-        {/* Logo */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="cursor-pointer"
-        >
-          <Link to="/">
-            <div>
-              <h1 className="font-serif text-xl md:text-2xl bg-gradient-to-r from-vibrant-cyan via-vibrant-magenta to-vibrant-orange bg-clip-text text-transparent font-light">
-                Abledots
-              </h1>
-              <p className="text-xs bg-gradient-to-r from-vibrant-magenta to-vibrant-orange bg-clip-text text-transparent font-light -mt-1">
-                For every way of being
-              </p>
-            </div>
+        <nav className="mx-auto max-w-7xl flex items-center justify-between px-6 md:px-10 lg:px-14 py-5">
+          {/* Logo */}
+          <Link to="/" className="flex flex-col group">
+            <span className="font-serif font-black text-xl text-light leading-none tracking-tight group-hover:text-mist transition-colors duration-200">
+              Abledots
+            </span>
+            <span className="text-sage text-xs font-light tracking-widest uppercase mt-0.5">
+              Inclusion as infrastructure
+            </span>
           </Link>
-        </motion.div>
 
-        {/* Desktop Nav */}
-        <ul className="hidden md:flex items-center gap-1">
-          {navItems.map((item, idx) => {
-            const hoverColors = ['blush', 'lavender', 'sky', 'sage', 'gold']
-            const hoverColor = hoverColors[idx % hoverColors.length]
-            const bgColor = `${hoverColor}-100`
-            const borderColor = `${hoverColor}-300`
-            
-            return (
+          {/* Desktop nav */}
+          <ul className="hidden md:flex items-center gap-10">
+            {navItems.map((item) => (
               <li key={item.href}>
-                <motion.div
-                  onHoverStart={() => setHoveredLink(item.href)}
-                  onHoverEnd={() => setHoveredLink(null)}
-                  className="relative"
+                <Link
+                  to={item.href}
+                  className={`text-sm font-bold tracking-wide transition-colors duration-200 ${
+                    location.pathname === item.href
+                      ? 'text-light'
+                      : 'text-mist hover:text-light'
+                  }`}
                 >
-                  <Link
-                    to={item.href}
-                    className={`px-4 py-2 text-sm font-light text-warm-gray hover:text-${hoverColor}-500 transition-colors`}
-                  >
-                    {item.label}
-                  </Link>
-                  {hoveredLink === item.href && (
+                  {item.label}
+                  {location.pathname === item.href && (
                     <motion.div
-                      layoutId="navbar-bg"
-                      className={`absolute inset-0 bg-${bgColor}/40 rounded-lg -z-10 border border-${borderColor}/30`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.2 }}
+                      layoutId="nav-underline"
+                      className="h-px bg-brick mt-0.5"
                     />
                   )}
-                </motion.div>
+                </Link>
               </li>
-            )
-          })}
-        </ul>
+            ))}
+          </ul>
 
-        {/* CTA Buttons */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Terms button - Desktop only */}
-          <motion.div className="hidden sm:inline-flex">
-            <motion.a
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              href="/terms"
-              className="px-4 py-2 text-xs font-light text-vibrant-magenta border border-vibrant-magenta/40 hover:border-vibrant-magenta/70 rounded-full transition-all"
+          {/* CTA + hamburger */}
+          <div className="flex items-center gap-3">
+            <Link to="/contact" className="hidden md:block">
+              <motion.span
+                whileHover={{ boxShadow: '4px 4px 0px #C6CFD6', x: -2, y: -2 }}
+                whileTap={{ boxShadow: '1px 1px 0px #C6CFD6', x: 0, y: 0 }}
+                transition={{ duration: 0.1 }}
+                className="inline-block px-6 py-2.5 bg-brick text-light text-xs font-bold tracking-widest uppercase cursor-pointer"
+              >
+                Join the Movement
+              </motion.span>
+            </Link>
+
+            <button
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              onClick={() => setMenuOpen((p) => !p)}
+              className="md:hidden p-2 text-light hover:text-mist transition-colors"
             >
-              Terms
-            </motion.a>
-          </motion.div>
+              <AnimatePresence mode="wait" initial={false}>
+                {menuOpen ? (
+                  <motion.svg
+                    key="close"
+                    initial={{ rotate: -45, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 45, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    width="22" height="22" viewBox="0 0 22 22" fill="none"
+                  >
+                    <path d="M4 4l14 14M18 4L4 18" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
+                  </motion.svg>
+                ) : (
+                  <motion.svg
+                    key="burger"
+                    initial={{ rotate: 45, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -45, opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    width="22" height="16" viewBox="0 0 22 16" fill="none"
+                  >
+                    <path d="M0 1h22M0 8h22M0 15h22" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
+                  </motion.svg>
+                )}
+              </AnimatePresence>
+            </button>
+          </div>
+        </nav>
+      </motion.header>
 
-          {/* Primary CTA */}
-          <motion.div className="hidden sm:inline-flex">
-            <motion.a
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              href="/contact"
-              className="px-6 py-2 text-sm font-light text-white bg-gradient-to-br from-vibrant-cyan to-vibrant-magenta rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <>
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-30 bg-forest/70 md:hidden"
+              onClick={() => setMenuOpen(false)}
+            />
+            <motion.div
+              key="drawer"
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.25, ease: 'easeOut' }}
+              className="fixed inset-x-0 top-[73px] z-40 bg-forest border-t border-mist/20 md:hidden"
             >
-              Let's talk
-            </motion.a>
-          </motion.div>
-
-          {/* Mobile menu button */}
-          <motion.button
-            className="md:hidden p-2 text-vibrant-magenta hover:bg-vibrant-magenta/10 rounded-lg transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
-              <path d="M1 1h18M1 8h18M1 15h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
-          </motion.button>
-        </div>
-      </motion.nav>
-    </motion.header>
+              <nav className="max-w-7xl mx-auto px-6 py-6 space-y-0.5">
+                {navItems.map((item, idx) => (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.07, duration: 0.25 }}
+                  >
+                    <Link
+                      to={item.href}
+                      className="block py-4 text-lg font-bold text-mist hover:text-light border-b border-mist/10 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                <motion.div
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: navItems.length * 0.07, duration: 0.25 }}
+                  className="pt-4"
+                >
+                  <Link to="/contact" className="btn-primary w-full justify-center">
+                    Join the Movement
+                  </Link>
+                </motion.div>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   )
 }

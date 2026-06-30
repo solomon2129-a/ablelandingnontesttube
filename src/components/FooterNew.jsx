@@ -1,137 +1,130 @@
 import React from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { EnvelopeIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
+import { motion } from 'framer-motion'
 
-export default function FooterNew(){
-  const reduce = useReducedMotion()
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+}
 
-  const containerVariants = {
-    hidden: reduce ? {} : { opacity: 0 },
-    visible: reduce ? {} : {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1
-      }
-    }
-  }
+const stagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+}
 
-  const itemVariants = {
-    hidden: reduce ? {} : { opacity: 0, y: 10 },
-    visible: reduce ? {} : {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
-    }
-  }
+export default function FooterNew() {
+  const sections = [
+    {
+      title: 'Company',
+      links: [
+        { label: 'About',   href: '/about' },
+        { label: 'Vision',  href: '/about' },
+        { label: 'Contact', href: '/contact' },
+      ],
+    },
+    {
+      title: 'Products',
+      links: [
+        { label: 'AbleHires', href: '/ablehires' },
+      ],
+    },
+    {
+      title: 'Partners',
+      links: [
+        { label: 'Facilities', href: '/partner' },
+        { label: 'Corporates', href: '/partner' },
+      ],
+    },
+    {
+      title: 'Legal',
+      links: [
+        { label: 'Privacy', href: '/privacy' },
+        { label: 'Terms',   href: '/terms' },
+      ],
+    },
+  ]
 
   return (
-    <motion.footer
-      initial={reduce ? {} : { opacity: 0, y: 20 }}
-      whileInView={reduce ? {} : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.8 }}
-      className="relative pt-16 md:pt-20 pb-8 overflow-hidden bg-choco-800"
-    >
-      {/* Decorative blobs */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-20 -left-20 w-72 h-72 bg-gradient-to-br from-coral-500/20 to-transparent rounded-full blur-3xl" />
-        <div className="absolute -bottom-32 right-0 w-80 h-80 bg-gradient-to-tl from-teal-500/15 to-transparent rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-sunny-400/10 to-poppy-400/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10">
-        {/* Main content */}
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-10 md:py-12">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8"
-          >
-            {/* Branding */}
-            <motion.div variants={itemVariants} className="md:col-span-1">
-              <div className="mb-6">
-                <h3 className="font-serif text-2xl bg-gradient-to-r from-coral-400 via-sunny-400 to-teal-400 bg-clip-text text-transparent font-light mb-3">
-                  Abledots
-                </h3>
-                <p className="text-sm text-choco-200 font-light leading-relaxed">
-                  Infrastructure for genuine human connection.
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-coral-500/20 text-coral-300 border border-coral-500/30">
-                  India-First
-                </span>
-                <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30">
-                  Social Impact
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Legal */}
-            <motion.div variants={itemVariants}>
-              <h4 className="text-sm font-semibold bg-gradient-to-r from-sunny-400 to-coral-400 bg-clip-text text-transparent uppercase tracking-wider mb-6">
-                Legal
-              </h4>
-              <ul className="space-y-4">
-                <li>
-                  <Link to="/privacy" className="text-choco-200 font-light hover:text-coral-400 transition-colors">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/terms" className="text-choco-200 font-light hover:text-coral-400 transition-colors">
-                    Terms & Conditions
-                  </Link>
-                </li>
-                <li>
-                  <a href="mailto:antomichae03@gmail.com" className="text-choco-200 font-light hover:text-teal-400 transition-colors flex items-center gap-2">
-                    <EnvelopeIcon className="w-4 h-4" />
-                    antomichae03@gmail.com
-                  </a>
-                </li>
-              </ul>
-            </motion.div>
-
-            {/* Connect */}
-            <motion.div variants={itemVariants}>
-              <h4 className="text-sm font-semibold bg-gradient-to-r from-teal-400 to-sunny-400 bg-clip-text text-transparent uppercase tracking-wider mb-6">
-                Connect
-              </h4>
-              <ul className="space-y-4">
-                <li>
-                  <a href="#linkedin" className="text-choco-200 font-light hover:text-teal-400 transition-colors inline-flex items-center gap-2">
-                    LinkedIn <ArrowTopRightOnSquareIcon className="w-4 h-4" />
-                  </a>
-                </li>
-                <li>
-                  <a href="tel:+919591562286" className="text-choco-200 font-light hover:text-sunny-400 transition-colors">
-                    +91 95915 62286
-                  </a>
-                </li>
-              </ul>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Bottom */}
+    <footer className="bg-forest border-t border-mist/10">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-14 pt-16 pb-8">
         <motion.div
-          variants={itemVariants}
-          className="border-t border-choco-600/50 py-6"
+          variants={stagger}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-2 md:grid-cols-6 gap-10 mb-16"
         >
-          <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-choco-300 font-light">
-            <p>
-              &copy; {new Date().getFullYear()} Abledots. Crafted with care.
+          {/* Brand */}
+          <motion.div variants={fadeUp} className="col-span-2">
+            <Link to="/">
+              <span className="font-serif font-black text-2xl text-light tracking-tight block mb-1">
+                Abledots
+              </span>
+            </Link>
+            <p className="text-sage text-xs tracking-widest uppercase mb-4">
+              Inclusion as infrastructure
             </p>
-            <p className="bg-gradient-to-r from-coral-400 via-sunny-400 to-teal-400 bg-clip-text text-transparent font-medium">
-              Made for every human, everywhere.
+            <p className="text-mist text-sm leading-relaxed max-w-xs">
+              Building India's social wellbeing ecosystem—connecting underserved talent, NGOs, and corporates.
             </p>
-          </div>
+            <div className="flex gap-4 mt-6">
+              <a
+                href="https://www.linkedin.com/company/abledots/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-mist hover:text-light text-xs font-bold tracking-widest uppercase transition-colors"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-mist hover:text-light text-xs font-bold tracking-widest uppercase transition-colors"
+              >
+                Twitter
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Links */}
+          {sections.map((section) => (
+            <motion.div key={section.title} variants={fadeUp} className="col-span-1">
+              <h4 className="text-xs font-bold text-sage tracking-widest uppercase mb-5">
+                {section.title}
+              </h4>
+              <ul className="space-y-3">
+                {section.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      to={link.href}
+                      className="text-sm text-mist hover:text-light transition-colors font-light"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
         </motion.div>
+
+        {/* Divider */}
+        <motion.div
+          className="h-px bg-mist/15 origin-left"
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: 'easeInOut' }}
+        />
+
+        <div className="pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-mist/60 font-light">
+          <p>&copy; {new Date().getFullYear()} Abledots. All rights reserved.</p>
+          <p className="text-sage font-bold tracking-widest uppercase">
+            Inclusion is infrastructure.
+          </p>
+        </div>
       </div>
-    </motion.footer>
+    </footer>
   )
 }

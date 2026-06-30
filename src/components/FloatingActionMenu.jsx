@@ -1,89 +1,88 @@
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import LordIcon, { ICONS } from './LordIcon'
 
 export default function FloatingActionMenu() {
+  const reduce = useReducedMotion()
   const [isOpen, setIsOpen] = useState(false)
 
   const actions = [
     {
-      icon: '📞',
-      label: 'Call Us',
-      action: () => { window.location.href = 'tel:+919591562286' }
+      label: 'Email Us',
+      icon:  <LordIcon src={ICONS.email} trigger="hover" size={20} palette="onDark" />,
+      action: () => { window.location.href = 'mailto:abledots.official@gmail.com' },
     },
     {
-      icon: '📧',
-      label: 'Email Us',
-      action: () => { window.location.href = 'mailto:antomichae03@gmail.com' }
-    }
+      label: 'Call Us',
+      icon:  <LordIcon src={ICONS.phone} trigger="hover" size={20} palette="onDark" />,
+      action: () => { window.location.href = 'tel:+919591562286' },
+    },
   ]
 
   return (
-    <div className="fixed bottom-8 right-8 z-50">
+    <div className="fixed bottom-8 right-8 z-50 flex flex-col-reverse items-end gap-3">
       <AnimatePresence>
-        {isOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/20 backdrop-blur-[2px] -z-10"
-              onClick={() => setIsOpen(false)}
-            />
-
-            {actions.map((action, idx) => (
-              <motion.button
-                key={idx}
-                initial={{ opacity: 0, scale: 0, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0, y: 20 }}
-                transition={{ delay: idx * 0.08, type: 'spring', stiffness: 200, damping: 15 }}
-                onClick={() => { action.action(); setIsOpen(false) }}
-                className="absolute right-0 flex items-center gap-3"
-                style={{ bottom: `${(idx + 1) * 72}px` }}
-              >
-                {/* Label */}
-                <span className="bg-choco-800 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-warm-lg whitespace-nowrap">
-                  {action.label}
-                </span>
-                {/* Icon button */}
-                <span
-                  className="w-14 h-14 rounded-full text-2xl flex items-center justify-center shadow-warm-lg hover:scale-110 transition-transform"
-                  style={{
-                    background: idx === 0
-                      ? 'linear-gradient(135deg, #14B8A6, #0D9488)'
-                      : 'linear-gradient(135deg, #FF6B35, #E85A2A)'
-                  }}
-                >
-                  {action.icon}
-                </span>
-              </motion.button>
-            ))}
-          </>
-        )}
+        {isOpen && actions.map((action, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 16, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.9 }}
+            transition={{
+              delay: reduce ? 0 : idx * 0.06,
+              duration: 0.2,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            className="flex items-center gap-3"
+          >
+            <motion.span
+              className="bg-light text-forest text-xs font-bold px-4 py-2.5 tracking-wide border border-mist/60 whitespace-nowrap"
+              whileHover={{ x: -2 }}
+            >
+              {action.label}
+            </motion.span>
+            <motion.button
+              onClick={() => { action.action(); setIsOpen(false) }}
+              whileHover={reduce ? {} : {
+                boxShadow: '3px 3px 0px #0C2E2B',
+                x: -2, y: -2,
+              }}
+              whileTap={{ x: 0, y: 0 }}
+              transition={{ duration: 0.1 }}
+              className="w-12 h-12 bg-forest text-light flex items-center justify-center border border-mist/20"
+            >
+              {action.icon}
+            </motion.button>
+          </motion.div>
+        ))}
       </AnimatePresence>
 
-      {/* Main FAB Button */}
+      {/* Main FAB */}
       <motion.button
-        onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        className="w-16 h-16 rounded-full text-3xl flex items-center justify-center shadow-warm-lg relative"
-        style={{
-          background: 'linear-gradient(135deg, #FF6B35, #E85A2A)',
-          color: 'white'
+        onClick={() => setIsOpen((p) => !p)}
+        whileHover={reduce ? {} : {
+          boxShadow: '4px 4px 0px #0C2E2B',
+          x: -2, y: -2,
         }}
+        whileTap={{ x: 0, y: 0 }}
+        transition={{ duration: 0.1 }}
+        className="w-14 h-14 bg-brick text-light flex items-center justify-center relative"
+        aria-label="Contact options"
       >
         <motion.span
-          animate={{ rotate: isOpen ? 45 : 0 }}
-          transition={{ duration: 0.2 }}
-          className="inline-block"
+          animate={reduce ? {} : { rotate: isOpen ? 45 : 0 }}
+          transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="inline-block text-2xl font-light leading-none"
         >
           +
         </motion.span>
-        {/* Pulse ring */}
-        {!isOpen && (
-          <span className="absolute inset-0 rounded-full bg-coral-500/30 animate-ping" style={{ animationDuration: '2s' }} />
+
+        {!isOpen && !reduce && (
+          <motion.span
+            className="absolute inset-0 border-2 border-brick"
+            animate={{ scale: [1, 1.5], opacity: [0.8, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity }}
+          />
         )}
       </motion.button>
     </div>
